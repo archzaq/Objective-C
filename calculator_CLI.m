@@ -2,7 +2,7 @@
 // Author: Zac Reeves
 // Created: 11-19-25
 // Updated: 12-18-25
-// Version: 1.0
+// Version: 1.1
 
 #import <Foundation/Foundation.h>
 #import <readline/readline.h>
@@ -40,6 +40,7 @@
     printf("| 2 Subtraction     |\n");
     printf("| 3 Multiplication  |\n");
     printf("| 4 Division        |\n");
+    printf("| 5 Square          |\n");
     printf("| 0 Quit            |\n");
     printf("---------------------\n");
     if (self.currentTotal != 0) {
@@ -177,10 +178,11 @@ int main(int argc, const char * argv[]) {
         // Operation Arrays
         NSArray *additionWordArray = @[@"add", @"addition", @"add dem", @"sum", @"plus", @"+"];
         NSArray *subtractionWordArray = @[@"sub", @"subtract", @"subtraction", @"remove dem", @"difference", @"minus", @"-"];
-        NSArray *multiplicationWordArray = @[@"multi", @"multiply", @"double up", @"multiply dem", @"product", @"*"];
+        NSArray *multiplicationWordArray = @[@"multi", @"multiply", @"multiply dem", @"product", @"*"];
         NSArray *divisionWordArray = @[@"div", @"divide", @"divy up", @"divide dem", @"quotient", @"/"];
         NSArray *quitWordArray = @[@"quit", @"exit", @"close", @"bye", @"q", @"yeet", @"skrrt"];
-        NSArray *operationArray = @[additionWordArray, subtractionWordArray, multiplicationWordArray, divisionWordArray];
+        NSArray *squareWordArray = @[@"square", @"^", @"sqr", @"sq", @"double up", @"two time"];
+        NSArray *operationArray = @[additionWordArray, subtractionWordArray, multiplicationWordArray, divisionWordArray, squareWordArray];
         
         // Declaring vars and creating calc
         BOOL keepRunning = YES;
@@ -248,6 +250,16 @@ int main(int argc, const char * argv[]) {
                     [calc showMenu];
                     break;
                     
+                case 5:
+                    printf("---------------------\n");
+                    printf("|      Square       |\n");
+                    printf("---------------------\n");
+                    printf("Enter the number: ");
+                    double numberToSquare = [calc grabDoubleInput];
+                    double squareResult = [calc returnSquared:numberToSquare];
+                    printf("%.10g squared is: %.10g\n", numberToSquare, squareResult);
+                    break;
+                    
                 case 0:
                     printf("Thanks for using Calculator!\n");
                     keepRunning = NO;
@@ -261,3 +273,4 @@ int main(int argc, const char * argv[]) {
     }
     return EXIT_SUCCESS;
 }
+
