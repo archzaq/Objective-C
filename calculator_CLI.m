@@ -8,23 +8,23 @@
 #import <readline/readline.h>
 
 @interface Calculator : NSObject
-@property double currentTotal;
+@property (nonatomic, strong) NSNumber *currentTotal;
 - (void)sayWelcome;
 - (void)showMenu;
-- (double)returnSum:(double)leftNumber addTo:(double)rightNumber;
-- (double)returnDifference:(double)leftNumber subtractFrom:(double)rightNumber;
-- (double)returnProduct:(double)leftNumber multiplyBy:(double)rightNumber;
-- (double)returnQuotient:(double)leftNumber divideBy:(double)rightNumber;
-- (double)returnSquared:(double)numberToSquare;
+- (NSNumber *)returnSum:(NSNumber *)leftNumber addTo:(NSNumber *)rightNumber;
+- (NSNumber *)returnDifference:(NSNumber *)leftNumber subtractFrom:(NSNumber *)rightNumber;
+- (NSNumber *)returnProduct:(NSNumber *)leftNumber multiplyBy:(NSNumber *)rightNumber;
+- (NSNumber *)returnQuotient:(NSNumber *)leftNumber divideBy:(NSNumber *)rightNumber;
+- (NSNumber *)returnSquared:(NSNumber *)numberToSquare;
 - (NSInteger)grabMenuOption:(NSArray *)operationArray quitWords:(NSArray *)quitWordArray;
-- (double)grabDoubleInput;
+- (NSNumber *)grabNSNumberInput;
 @end
 
 @implementation Calculator
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _currentTotal = 0.0;
+        _currentTotal = @(0);
     }
     return self;
 }
@@ -43,46 +43,55 @@
     printf("| 5 Square          |\n");
     printf("| 0 Quit            |\n");
     printf("---------------------\n");
-    if (self.currentTotal != 0) {
+    if ([self.currentTotal doubleValue] != 0) {
         printf("---------------------\n");
-        printf("| Total: %-11.10g |\n", self.currentTotal);
+        printf("| Total: %-11.10g |\n", [self.currentTotal doubleValue]);
         printf("---------------------\n");
     }
 }
 
-- (double)returnSum:(double)leftNumber addTo:(double)rightNumber {
-    double result = leftNumber + rightNumber;
-    self.currentTotal = result;
-    return result;
+- (NSNumber *)returnSum:(NSNumber *)leftNumber addTo:(NSNumber *)rightNumber {
+    double left = [leftNumber doubleValue];
+    double right = [rightNumber doubleValue];
+    double result = left + right;
+    self.currentTotal = @(result);
+    return @(result);
 }
 
-- (double)returnDifference:(double)leftNumber subtractFrom:(double)rightNumber {
-    double result = leftNumber - rightNumber;
-    self.currentTotal = result;
-    return result;
+- (NSNumber *)returnDifference:(NSNumber *)leftNumber subtractFrom:(NSNumber *)rightNumber {
+    double left = [leftNumber doubleValue];
+    double right = [rightNumber doubleValue];
+    double result = left - right;
+    self.currentTotal = @(result);
+    return @(result);
 }
 
-- (double)returnProduct:(double)leftNumber multiplyBy:(double)rightNumber {
-    double result = leftNumber * rightNumber;
-    self.currentTotal = result;
-    return result;
+- (NSNumber *)returnProduct:(NSNumber *)leftNumber multiplyBy:(NSNumber *)rightNumber {
+    double left = [leftNumber doubleValue];
+    double right = [rightNumber doubleValue];
+    double result = left * right;
+    self.currentTotal = @(result);
+    return @(result);
 }
 
-- (double)returnQuotient:(double)leftNumber divideBy:(double)rightNumber {
-    if (rightNumber == 0.0) {
+- (NSNumber *)returnQuotient:(NSNumber *)leftNumber divideBy:(NSNumber *)rightNumber {
+    if ([rightNumber doubleValue] == 0.0) {
         printf("Error: Cannot divide by zero!\n");
-        self.currentTotal = 0;
+        self.currentTotal = @(0);
         return self.currentTotal;
     }
-    double result = leftNumber / rightNumber;
-    self.currentTotal = result;
-    return result;
+    double left = [leftNumber doubleValue];
+    double right = [rightNumber doubleValue];
+    double result = left / right;
+    self.currentTotal = @(result);
+    return @(result);
 }
 
-- (double)returnSquared:(double)numberToSquare {
-    double result = numberToSquare * numberToSquare;
-    self.currentTotal = result;
-    return result;
+- (NSNumber *)returnSquared:(NSNumber *)numberToSquare {
+    double num = [numberToSquare doubleValue];
+    double result = num * num;
+    self.currentTotal = @(result);
+    return @(result);
 }
 
 - (NSInteger)grabMenuOption:(NSArray *)operationArray quitWords:(NSArray *)quitWordArray {
@@ -139,9 +148,9 @@
     return menuChoiceInt;
 }
 
-- (double)grabDoubleInput {
+- (NSNumber *)grabNSNumberInput {
     char *input;
-    double userNumber;
+    NSNumber *userNumber;
     BOOL valid = NO;
     
     while (!valid) {
@@ -159,7 +168,7 @@
         
         // Check if it's a valid number, including 0
         if ([inputString doubleValue] != 0.0 || [inputString isEqualToString:@"0"] || [inputString isEqualToString:@"0.0"]) {
-            userNumber = [inputString doubleValue];
+            userNumber = @([inputString doubleValue]);
             free(input);
             valid = YES;
             return userNumber;
@@ -197,68 +206,70 @@ int main(int argc, const char * argv[]) {
         while (keepRunning) {
             menuChoiceInt = [calc grabMenuOption:operationArray quitWords:quitWordArray];
             switch (menuChoiceInt) {
-                case 1:
+                case 1: {
                     printf("---------------------\n");
                     printf("|      Addition     |\n");
                     printf("---------------------\n");
-                    
+
                     printf("Enter the first number: ");
-                    double firstAddNumber = [calc grabDoubleInput];
+                    NSNumber *firstAddNumber = [calc grabNSNumberInput];
                     printf("Enter the second number: ");
-                    double secondAddNumber = [calc grabDoubleInput];
-                    double addResult = [calc returnSum:firstAddNumber addTo:secondAddNumber];
-                    printf("The sum of %.10g and %.10g is: %.10g\n", firstAddNumber, secondAddNumber, addResult);
+                    NSNumber *secondAddNumber = [calc grabNSNumberInput];
+                    NSNumber *addResult = [calc returnSum:firstAddNumber addTo:secondAddNumber];
+                    printf("The sum of %.10g and %.10g is: %.10g\n", [firstAddNumber doubleValue], [secondAddNumber doubleValue], [addResult doubleValue]);
                     [calc showMenu];
                     break;
-                    
-                case 2:
+                }
+                case 2: {
                     printf("---------------------\n");
                     printf("|    Subtraction    |\n");
                     printf("---------------------\n");
                     printf("Enter the first number: ");
-                    double firstSubNumber = [calc grabDoubleInput];
+                    NSNumber *firstSubNumber = [calc grabNSNumberInput];
                     printf("Enter the second number: ");
-                    double secondSubNumber = [calc grabDoubleInput];
-                    double subResult = [calc returnDifference:firstSubNumber subtractFrom:secondSubNumber];
-                    printf("The difference between %.10g and %.10g is: %.10g\n", firstSubNumber, secondSubNumber, subResult);
+                    NSNumber *secondSubNumber = [calc grabNSNumberInput];
+                    NSNumber *subResult = [calc returnDifference:firstSubNumber subtractFrom:secondSubNumber];
+                    printf("The difference between %.10g and %.10g is: %.10g\n", [firstSubNumber doubleValue], [secondSubNumber doubleValue], [subResult doubleValue]);
                     [calc showMenu];
                     break;
-                    
-                case 3: 
+                }
+                case 3: {
                     printf("---------------------\n");
                     printf("|   Multiplication  |\n");
                     printf("---------------------\n");
                     printf("Enter the first number: ");
-                    double firstMultNumber = [calc grabDoubleInput];
+                    NSNumber *firstMultNumber = [calc grabNSNumberInput];
                     printf("Enter the second number: ");
-                    double secondMultNumber = [calc grabDoubleInput];
-                    double multResult = [calc returnProduct:firstMultNumber multiplyBy:secondMultNumber];
-                    printf("The product of %.10g and %.10g is: %.10g\n", firstMultNumber, secondMultNumber, multResult);
+                    NSNumber *secondMultNumber = [calc grabNSNumberInput];
+                    NSNumber *multResult = [calc returnProduct:firstMultNumber multiplyBy:secondMultNumber];
+                    printf("The product of %.10g and %.10g is: %.10g\n", [firstMultNumber doubleValue], [secondMultNumber doubleValue], [multResult doubleValue]);
                     [calc showMenu];
                     break;
-
-                case 4:
+                }
+                case 4: {
                     printf("---------------------\n");
                     printf("|     Division      |\n");
                     printf("---------------------\n");
                     printf("Enter the first number: ");
-                    double firstDivNumber = [calc grabDoubleInput];
+                    NSNumber *firstDivNumber = [calc grabNSNumberInput];
                     printf("Enter the second number: ");
-                    double secondDivNumber = [calc grabDoubleInput];
-                    double divResult = [calc returnQuotient:firstDivNumber divideBy:secondDivNumber];
-                    printf("The quotient of %.10g and %.10g is: %.10g\n", firstDivNumber, secondDivNumber, divResult);
+                    NSNumber *secondDivNumber = [calc grabNSNumberInput];
+                    NSNumber *divResult = [calc returnQuotient:firstDivNumber divideBy:secondDivNumber];
+                    printf("The quotient of %.10g and %.10g is: %.10g\n", [firstDivNumber doubleValue], [secondDivNumber doubleValue], [divResult doubleValue]);
                     [calc showMenu];
                     break;
-                    
-                case 5:
+                }
+                case 5: {
                     printf("---------------------\n");
                     printf("|      Square       |\n");
                     printf("---------------------\n");
                     printf("Enter the number: ");
-                    double numberToSquare = [calc grabDoubleInput];
-                    double squareResult = [calc returnSquared:numberToSquare];
-                    printf("%.10g squared is: %.10g\n", numberToSquare, squareResult);
+                    NSNumber *numberToSquare = [calc grabNSNumberInput];
+                    NSNumber *squareResult = [calc returnSquared:numberToSquare];
+                    printf("%.10g squared is: %.10g\n", [numberToSquare doubleValue], [squareResult doubleValue]);
+                    [calc showMenu];
                     break;
+                }
                     
                 case 0:
                     printf("Thanks for using Calculator!\n");
