@@ -11,13 +11,13 @@
 @property (nonatomic, strong) NSNumber *currentTotal;
 - (void)sayWelcome;
 - (void)showMenu;
-- (NSNumber *)returnSum:(NSNumber *)leftNumber addTo:(NSNumber *)rightNumber;
-- (NSNumber *)returnDifference:(NSNumber *)leftNumber subtractFrom:(NSNumber *)rightNumber;
-- (NSNumber *)returnProduct:(NSNumber *)leftNumber multiplyBy:(NSNumber *)rightNumber;
-- (NSNumber *)returnQuotient:(NSNumber *)leftNumber divideBy:(NSNumber *)rightNumber;
+- (NSNumber *)add:(NSNumber *)leftNumber to:(NSNumber *)rightNumber;
+- (NSNumber *)subtract:(NSNumber *)leftNumber from:(NSNumber *)rightNumber;
+- (NSNumber *)multiply:(NSNumber *)leftNumber by:(NSNumber *)rightNumber;
+- (NSNumber *)divide:(NSNumber *)leftNumber by:(NSNumber *)rightNumber;
 - (NSNumber *)returnSquared:(NSNumber *)numberToSquare;
-- (NSInteger)grabMenuOption:(NSArray *)operationArray quitWords:(NSArray *)quitWordArray;
 - (NSNumber *)grabNSNumberInput;
+- (NSInteger)grabMenuOption:(NSArray *)operationArray quitWords:(NSArray *)quitWordArray;
 @end
 
 @implementation Calculator
@@ -50,22 +50,22 @@
     }
 }
 
-- (NSNumber *)returnSum:(NSNumber *)leftNumber addTo:(NSNumber *)rightNumber {
+- (NSNumber *)add:(NSNumber *)leftNumber to:(NSNumber *)rightNumber {
     self.currentTotal = [NSNumber numberWithDouble: [leftNumber doubleValue] + [rightNumber doubleValue]];
     return self.currentTotal;
 }
 
-- (NSNumber *)returnDifference:(NSNumber *)leftNumber subtractFrom:(NSNumber *)rightNumber {
+- (NSNumber *)subtract:(NSNumber *)leftNumber from:(NSNumber *)rightNumber {
     self.currentTotal = [NSNumber numberWithDouble: [leftNumber doubleValue] - [rightNumber doubleValue]];
     return self.currentTotal;
 }
 
-- (NSNumber *)returnProduct:(NSNumber *)leftNumber multiplyBy:(NSNumber *)rightNumber {
+- (NSNumber *)multiply:(NSNumber *)leftNumber by:(NSNumber *)rightNumber {
     self.currentTotal = [NSNumber numberWithDouble: [leftNumber doubleValue] * [rightNumber doubleValue]];
     return self.currentTotal;
 }
 
-- (NSNumber *)returnQuotient:(NSNumber *)leftNumber divideBy:(NSNumber *)rightNumber {
+- (NSNumber *)divide:(NSNumber *)leftNumber by:(NSNumber *)rightNumber {
     if ([rightNumber doubleValue] == 0.0) {
         printf("Error: Cannot divide by zero!\n");
         return self.currentTotal;
@@ -204,7 +204,7 @@ int main(int argc, const char * argv[]) {
                     NSNumber *firstAddNumber = [calc grabNSNumberInput];
                     printf("Enter the second number: ");
                     NSNumber *secondAddNumber = [calc grabNSNumberInput];
-                    NSNumber *addResult = [calc returnSum:firstAddNumber addTo:secondAddNumber];
+                    NSNumber *addResult = [calc add:firstAddNumber to:secondAddNumber];
                     printf("The sum of %.10g and %.10g is: %.10g\n", [firstAddNumber doubleValue], [secondAddNumber doubleValue], [addResult doubleValue]);
                     [calc showMenu];
                     break;
@@ -217,7 +217,7 @@ int main(int argc, const char * argv[]) {
                     NSNumber *firstSubNumber = [calc grabNSNumberInput];
                     printf("Enter the second number: ");
                     NSNumber *secondSubNumber = [calc grabNSNumberInput];
-                    NSNumber *subResult = [calc returnDifference:firstSubNumber subtractFrom:secondSubNumber];
+                    NSNumber *subResult = [calc subtract:firstSubNumber from:secondSubNumber];
                     printf("The difference between %.10g and %.10g is: %.10g\n", [firstSubNumber doubleValue], [secondSubNumber doubleValue], [subResult doubleValue]);
                     [calc showMenu];
                     break;
@@ -230,7 +230,7 @@ int main(int argc, const char * argv[]) {
                     NSNumber *firstMultNumber = [calc grabNSNumberInput];
                     printf("Enter the second number: ");
                     NSNumber *secondMultNumber = [calc grabNSNumberInput];
-                    NSNumber *multResult = [calc returnProduct:firstMultNumber multiplyBy:secondMultNumber];
+                    NSNumber *multResult = [calc multiply:firstMultNumber by:secondMultNumber];
                     printf("The product of %.10g and %.10g is: %.10g\n", [firstMultNumber doubleValue], [secondMultNumber doubleValue], [multResult doubleValue]);
                     [calc showMenu];
                     break;
@@ -243,7 +243,7 @@ int main(int argc, const char * argv[]) {
                     NSNumber *firstDivNumber = [calc grabNSNumberInput];
                     printf("Enter the second number: ");
                     NSNumber *secondDivNumber = [calc grabNSNumberInput];
-                    NSNumber *divResult = [calc returnQuotient:firstDivNumber divideBy:secondDivNumber];
+                    NSNumber *divResult = [calc divide:firstDivNumber by:secondDivNumber];
                     printf("The quotient of %.10g and %.10g is: %.10g\n", [firstDivNumber doubleValue], [secondDivNumber doubleValue], [divResult doubleValue]);
                     [calc showMenu];
                     break;
