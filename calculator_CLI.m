@@ -79,7 +79,8 @@
 }
 
 - (NSNumber *)returnSquared:(NSNumber *)numberToSquare {
-    double result = [numberToSquare doubleValue] * [numberToSquare doubleValue];
+    double num = [numberToSquare doubleValue];
+    double result = num * num;
     self.currentTotal = @(result);
     return @(result);
 }
