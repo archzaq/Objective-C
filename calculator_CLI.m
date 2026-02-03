@@ -51,25 +51,19 @@
 }
 
 - (NSNumber *)returnSum:(NSNumber *)leftNumber addTo:(NSNumber *)rightNumber {
-    double left = [leftNumber doubleValue];
-    double right = [rightNumber doubleValue];
-    double result = left + right;
+    double result = [leftNumber doubleValue] + [rightNumber doubleValue];
     self.currentTotal = @(result);
     return @(result);
 }
 
 - (NSNumber *)returnDifference:(NSNumber *)leftNumber subtractFrom:(NSNumber *)rightNumber {
-    double left = [leftNumber doubleValue];
-    double right = [rightNumber doubleValue];
-    double result = left - right;
+    double result = [leftNumber doubleValue] - [rightNumber doubleValue];
     self.currentTotal = @(result);
     return @(result);
 }
 
 - (NSNumber *)returnProduct:(NSNumber *)leftNumber multiplyBy:(NSNumber *)rightNumber {
-    double left = [leftNumber doubleValue];
-    double right = [rightNumber doubleValue];
-    double result = left * right;
+    double result = [leftNumber doubleValue] * [rightNumber doubleValue];
     self.currentTotal = @(result);
     return @(result);
 }
@@ -79,16 +73,13 @@
         printf("Error: Cannot divide by zero!\n");
         return self.currentTotal;
     }
-    double left = [leftNumber doubleValue];
-    double right = [rightNumber doubleValue];
-    double result = left / right;
+    double result = [leftNumber doubleValue] / [rightNumber doubleValue];
     self.currentTotal = @(result);
     return @(result);
 }
 
 - (NSNumber *)returnSquared:(NSNumber *)numberToSquare {
-    double num = [numberToSquare doubleValue];
-    double result = num * num;
+    double result = [numberToSquare doubleValue] * [numberToSquare doubleValue];
     self.currentTotal = @(result);
     return @(result);
 }
