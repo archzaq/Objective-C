@@ -77,7 +77,6 @@
 - (NSNumber *)returnQuotient:(NSNumber *)leftNumber divideBy:(NSNumber *)rightNumber {
     if ([rightNumber doubleValue] == 0.0) {
         printf("Error: Cannot divide by zero!\n");
-        self.currentTotal = @(0);
         return self.currentTotal;
     }
     double left = [leftNumber doubleValue];
@@ -152,7 +151,8 @@
     char *input;
     NSNumber *userNumber;
     BOOL valid = NO;
-    
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+
     while (!valid) {
         input = readline(NULL);
         
@@ -167,8 +167,11 @@
         NSString *inputString = [NSString stringWithUTF8String:input];
         
         // Check if it's a valid number, including 0
-        if ([inputString doubleValue] != 0.0 || [inputString isEqualToString:@"0"] || [inputString isEqualToString:@"0.0"]) {
-            userNumber = @([inputString doubleValue]);
+        [numberFormatter setFormatterBehavior: NSNumberFormatterBehaviorDefault];
+        [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        NSNumber *parsed = [numberFormatter numberFromString:inputString];
+        if (parsed != nil) {
+            userNumber = parsed;
             free(input);
             valid = YES;
             return userNumber;
@@ -178,7 +181,7 @@
             free(input);
         }
     }
-    return 0;
+    return nil;
 }
 @end
 
@@ -210,7 +213,6 @@ int main(int argc, const char * argv[]) {
                     printf("---------------------\n");
                     printf("|      Addition     |\n");
                     printf("---------------------\n");
-
                     printf("Enter the first number: ");
                     NSNumber *firstAddNumber = [calc grabNSNumberInput];
                     printf("Enter the second number: ");
